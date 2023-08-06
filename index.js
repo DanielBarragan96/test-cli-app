@@ -1,9 +1,19 @@
-import { intro, outro, select, spinner } from "@clack/prompts";
+import { intro, outro, select, spinner, confirm } from "@clack/prompts";
 
 intro(`Muestra example`);
 
+const isQuincenal = await confirm({
+  message: "Quincenal?",
+  initialValue: false,
+});
+const uploadEnObras = await confirm({
+  message: "uploadEnObras?",
+  initialValue: false,
+});
+
 const projectType = await select({
   message: "Pick a project type.",
+  initialValue: "GEN_MONGODB",
   options: [
     {
       value: "GEN_EXCEL",
