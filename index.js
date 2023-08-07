@@ -1,6 +1,12 @@
-import { intro, outro, select, spinner, confirm } from "@clack/prompts";
+import { intro, outro, select, spinner, confirm, text } from "@clack/prompts";
 
 intro(`Muestra example`);
+
+const otherDate = await text({
+  message: "Older date?",
+  placeholder: "yyyy-mm",
+  initialValue: "",
+});
 
 const isQuincenal = await confirm({
   message: "Quincenal?",
@@ -11,8 +17,8 @@ const uploadEnObras = await confirm({
   initialValue: false,
 });
 
-const projectType = await select({
-  message: "Pick a project type.",
+const operationType = await select({
+  message: "Pick an operation.",
   initialValue: "GEN_MONGODB",
   options: [
     {
@@ -40,8 +46,18 @@ const projectType = await select({
 
 const s = spinner();
 s.start("Working on it...");
+
+// Create command
+let cmd = `cd ~/Desktop/Cuentas && java -jar Muestra.jar ${operationType} `;
+if (uploadEnObras) cmd += "uploadEnObras ";
+if (isQuincenal) cmd += "quincenal ";
+if (otherDate) cmd += `fecha=${otherDate}`;
+
+// Delay to see the spinner
 await new Promise((resolve) => {
-  setTimeout(resolve, 1000);
+  setTimeout(resolve, 500);
 });
+
 s.stop("Generated files");
+
 outro(`Done!`);
